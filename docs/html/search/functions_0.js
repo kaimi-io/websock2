@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['_5f_5fconstruct',['__construct',['../class_web_request_exception.html#a5f9e33d1d744d953abb3ac62cb43ee51',1,'WebRequestException\__construct()'],['../class_web_response.html#a0566cdd65c004851d2ba7fb0b0fc19f6',1,'WebResponse\__construct()'],['../class_http_header_manager.html#a13c63533f75ce64f58f798ed2f32bcaf',1,'HttpHeaderManager\__construct()'],['../class_http_attachment.html#a3387125924c13e72878c47ecad75faca',1,'HttpAttachment\__construct()'],['../class_http_content_attachment.html#a293a1c328b1c35a9793aa104e6736d8c',1,'HttpContentAttachment\__construct()'],['../class_http_file_attachment.html#a6445e2a57786dbc3018e78507d075090',1,'HttpFileAttachment\__construct()'],['../class_web_request.html#ab925fcfad3c8495d518cce53c0258175',1,'WebRequest\__construct()'],['../class_web_proxy.html#a7f5a381861aea0fed2bba18da1a757d6',1,'WebProxy\__construct()'],['../class_http_cookie.html#aa9e9e2af358b323107636e9b52ed7146',1,'HttpCookie\__construct()'],['../class_http_request_manager.html#ade9d59e911f620cee6bdbcd80c24655f',1,'HttpRequestManager\__construct()']]],
+  ['_5f_5fdestruct',['__destruct',['../class_http_socket.html#a421831a265621325e1fdd19aace0c758',1,'HttpSocket']]],
+  ['_5f_5ftostring',['__toString',['../class_http_cookie.html#a7516ca30af0db3cdbf9a7739b48ce91d',1,'HttpCookie']]]
+];
