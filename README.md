@@ -30,4 +30,4 @@ Features:
 
 [Examples](http://kaimi-ru.github.io/websock2/examples.html)
 
-Copyright (c) DX, [kaimi.ru](http://kaimi.ru), [cider.pub](http://coder.pub)
+Copyright (c) DX, [kaimi.ru](http://kaimi.ru), [coder.pub](http://coder.pub)
