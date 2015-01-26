@@ -1,4 +1,4 @@
-# websock2
+# websock2.php
 ### PHP5 Library for browsing web
 
 This library allows to browse HTTP using PHP with no additional extensions like cURL. It consists of a single file (websock2.php), which you can add to your project to make all its classes available for use.
