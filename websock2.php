@@ -407,7 +407,7 @@ class HttpHeaderManager
 	{
 		$length = $this->getHeader('Content-Length');
 		if($length !== null
-			&& filter_var($length, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) !== false)
+			&& filter_var($length, FILTER_VALIDATE_INT, Array('options' => Array('min_range' => 0))) !== false)
 		{
 			return (int)$length;
 		}
