@@ -169,6 +169,7 @@ final class WebRequestHelpers
 class WebResponse
 {
 	private $raw;
+	private $header_manager = null;
 	
 	/**
 	* @brief Constructor
@@ -200,6 +201,7 @@ class WebResponse
 	public function setRawContents($contents)
 	{
 		$this->raw = $contents;
+		$this->header_manager = null;
 	}
 	
 	/**
@@ -217,9 +219,9 @@ class WebResponse
 	}
 	
 	/**
-	* @brief Returns response headers.
+	* @brief Returns raw response headers.
 	*
-	* @retval string Response headers
+	* @retval string Response headers (raw)
 	*/
 	public function getHeadersData()
 	{
@@ -228,6 +230,19 @@ class WebResponse
 			return $this->raw; //Consider all contents as headers in this case
 		
 		return substr($this->raw, 0, $headers_pos);
+	}
+	
+	/**
+	* @brief Returns response headers.
+	*
+	* @retval HttpHeaderManager Response headers
+	*/
+	public function getHeaders()
+	{
+		if($this->header_manager !== null)
+			return $this->header_manager;
+		
+		return $this->header_manager = new HttpHeaderManager($this->getHeadersData());
 	}
 	
 	/**
@@ -974,6 +989,15 @@ class HttpParamManager implements ArrayAccess
 		if(!is_string($name))
 			throw new InvalidArgumentException('HTTP parameter name must be string');
 		
+		if(is_array($value))
+		{
+			foreach($value as $param)
+			{
+				if($param === null)
+					throw new InvalidArgumentException('Name-only parameters can not be array');
+			}
+		}
+		
 		if($get_only)
 		{
 			$params = is_array($value) ? $value : Array($value);
@@ -1229,18 +1253,24 @@ class HttpParamManager implements ArrayAccess
 		{
 			$enum_function = function($name, $value, $multiple) use (&$ret)
 			{
-				$ret[] =  urlencode($name)
-					. ($multiple ? '[]=' : '=')
-					. urlencode($value);
+				$param_str = urlencode($name);
+				if($value !== null)
+					$param_str .= ($multiple ? '[]=' : '=')
+						. urlencode($value);
+				
+				$ret[] = $param_str;
 			};
 		}
 		else
 		{
 			$enum_function = function($name, $value, $multiple) use (&$ret)
 			{
-				$ret[] =  $name
-					. ($multiple ? '[]=' : '=')
-					. $value;
+				$param_str = $name;
+				if($value !== null)
+					$param_str .= ($multiple ? '[]=' : '=')
+						. urlencode($value);
+				
+				$ret[] = $param_str;
 			};
 		}
 		
@@ -1435,7 +1465,7 @@ class WebRequest
 							WebRequestException::UNABLE_TO_PARSE_URL);
 					}
 					
-					$unpacked_params[$name] = isset($pair[1]) ? $pair[1] : '';
+					$unpacked_params[$name] = isset($pair[1]) ? $pair[1] : null;
 				}
 			}
 			
@@ -3164,7 +3194,9 @@ class HttpCookie
 	}
 	
 	/**
-	* @brief Converts cookie to string.
+	* @brief Converts cookie to string, which is suitable for HTTP request.
+	*
+	* See also HttpCookie::toResponseString.
 	*
 	* @retval string Cookie string value
 	*/
@@ -3626,6 +3658,35 @@ class HttpCookie
 		return $cookie;
 	}
 	
+	/**
+	* @brief Returns cookie string that corresponds to Set-Cookie header format.
+	*
+	* Note that this string can differ from source string which was passed to HttpCookie::fromString.
+	* See also HttpCookie::__toString.
+	*
+	* @retval string Cookie string
+	*/
+	public function toResponseString()
+	{
+		$ret = (string)$this;
+		if($this->expires !== null)
+			$ret .= '; expires=' . gmdate('D, d M Y H:i:s T', $this->expires);
+		
+		if(isset($this->path[0]))
+			$ret .= '; path=' . $this->path;
+		
+		if(isset($this->domain[0]) && !$this->domain_exact)
+			$ret .= '; domain=' . $this->domain;
+		
+		if($this->secure)
+			$ret .= '; secure';
+		
+		if($this->http_only)
+			$ret .= '; HttpOnly';
+		
+		return $ret;
+	}
+	
 	static private function isExtensionString($str)
 	{
 		return preg_match('/^[\x20-\x3a\x3c-\x7e]+$/', $str);
@@ -4014,7 +4075,7 @@ class HttpRequestManager
 		if($response === null)
 			return null;
 		
-		$headers = new HttpHeaderManager($response->getHeadersData());
+		$headers = $response->getHeaders();
 		
 		if($this->cookie_manager !== null)
 		{

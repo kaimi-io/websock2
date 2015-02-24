@@ -130,8 +130,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ad7bab1db052fb9fcc8bd0b4f3eac29ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns response body.  <a href="#ad7bab1db052fb9fcc8bd0b4f3eac29ac">More...</a><br /></td></tr>
 <tr class="separator:ad7bab1db052fb9fcc8bd0b4f3eac29ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7172a703fddbbbcb80f48c3ff05dbb42"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_web_response.html#a7172a703fddbbbcb80f48c3ff05dbb42">getHeadersData</a> ()</td></tr>
-<tr class="memdesc:a7172a703fddbbbcb80f48c3ff05dbb42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns response headers.  <a href="#a7172a703fddbbbcb80f48c3ff05dbb42">More...</a><br /></td></tr>
+<tr class="memdesc:a7172a703fddbbbcb80f48c3ff05dbb42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns raw response headers.  <a href="#a7172a703fddbbbcb80f48c3ff05dbb42">More...</a><br /></td></tr>
 <tr class="separator:a7172a703fddbbbcb80f48c3ff05dbb42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a157e0005d82edaa21cbea07fdc5c62da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_web_response.html#a157e0005d82edaa21cbea07fdc5c62da">getHeaders</a> ()</td></tr>
+<tr class="memdesc:a157e0005d82edaa21cbea07fdc5c62da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns response headers.  <a href="#a157e0005d82edaa21cbea07fdc5c62da">More...</a><br /></td></tr>
+<tr class="separator:a157e0005d82edaa21cbea07fdc5c62da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ebfd2b4bf1a92485141ef828beffad9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_web_response.html#a7ebfd2b4bf1a92485141ef828beffad9">getHttpCode</a> ()</td></tr>
 <tr class="memdesc:a7ebfd2b4bf1a92485141ef828beffad9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns HTTP response code.  <a href="#a7ebfd2b4bf1a92485141ef828beffad9">More...</a><br /></td></tr>
 <tr class="separator:a7ebfd2b4bf1a92485141ef828beffad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,6 +191,29 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a157e0005d82edaa21cbea07fdc5c62da"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">getHeaders </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns response headers. </p>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="class_http_header_manager.html" title="HTTP headers manager. ">HttpHeaderManager</a></td><td>Response headers </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a7172a703fddbbbcb80f48c3ff05dbb42"></a>
 <div class="memitem">
 <div class="memproto">
@@ -201,10 +227,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns response headers. </p>
+<p>Returns raw response headers. </p>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
-    <tr><td class="paramname">string</td><td>Response headers </td></tr>
+    <tr><td class="paramname">string</td><td>Response headers (raw) </td></tr>
   </table>
   </dd>
 </dl>
@@ -290,7 +316,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_web_response.html">WebResponse</a></li>
-    <li class="footer">Generated on Sun Jan 25 2015 20:05:38 for PHP WebSocket2 Library by
+    <li class="footer">Generated on Tue Feb 24 2015 23:38:29 for PHP WebSocket2 Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -18,5 +18,6 @@ var class_http_cookie =
     [ "setName", "class_http_cookie.html#a2fe666694997d047711d7653eca2f132", null ],
     [ "setPath", "class_http_cookie.html#a5d101758b135bd36ba8992cc3bb67a24", null ],
     [ "setSecure", "class_http_cookie.html#ae072cad04d1330759f03125ce120ed5e", null ],
-    [ "setValue", "class_http_cookie.html#a7494441b6ed08a391704971873f31432", null ]
+    [ "setValue", "class_http_cookie.html#a7494441b6ed08a391704971873f31432", null ],
+    [ "toResponseString", "class_http_cookie.html#a4a0bf3c9bd24042906521f094cecb38e", null ]
 ];

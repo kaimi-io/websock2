@@ -19,7 +19,7 @@ var searchData=
   ['getfulladdress',['getFullAddress',['../class_web_request.html#a531ccf0654310b2a1982a8522a255413',1,'WebRequest']]],
   ['getheader',['getHeader',['../class_http_header_manager.html#a5b0169d9fabf145a619f35da410bc5d0',1,'HttpHeaderManager']]],
   ['getheadermanager',['getHeaderManager',['../class_web_request.html#a56b347e1fec173001bf7060d3f0b0a40',1,'WebRequest']]],
-  ['getheaders',['getHeaders',['../class_http_header_manager.html#a58a0e7147b7e40f23b0cbdfa99618fb7',1,'HttpHeaderManager']]],
+  ['getheaders',['getHeaders',['../class_web_response.html#a157e0005d82edaa21cbea07fdc5c62da',1,'WebResponse\getHeaders()'],['../class_http_header_manager.html#a58a0e7147b7e40f23b0cbdfa99618fb7',1,'HttpHeaderManager\getHeaders()']]],
   ['getheadersarray',['getHeadersArray',['../class_http_header_manager.html#a1d28ca11593e84afd16ae91359b9d399',1,'HttpHeaderManager']]],
   ['getheadersdata',['getHeadersData',['../class_web_response.html#a7172a703fddbbbcb80f48c3ff05dbb42',1,'WebResponse']]],
   ['gethttpcode',['getHttpCode',['../class_web_response.html#a7ebfd2b4bf1a92485141ef828beffad9',1,'WebResponse']]],

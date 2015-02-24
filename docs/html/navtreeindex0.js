@@ -45,6 +45,7 @@ var NAVTREEINDEX0 =
 "class_http_cookie.html#a30c5c67b2bf8e2e2ccc7e361faa20afe":[0,0,4,5],
 "class_http_cookie.html#a33e07bade02c056068aa68415d6b4502":[0,0,4,13],
 "class_http_cookie.html#a3d0963e68bb313b163a73f2803c64600":[0,0,4,4],
+"class_http_cookie.html#a4a0bf3c9bd24042906521f094cecb38e":[0,0,4,19],
 "class_http_cookie.html#a4d7f2058fe0af483b5eebb1bb78d9ab7":[0,0,4,2],
 "class_http_cookie.html#a5697bf19949797001580407388ddb6ff":[0,0,4,10],
 "class_http_cookie.html#a5d101758b135bd36ba8992cc3bb67a24":[0,0,4,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "class_web_request.html#af38dae8c3d156194affe2d55ba7e6ee7":[0,0,20,12],
 "class_web_request.html#af3c06cfaf127c672320b5c894c84ffda":[0,0,20,20],
 "class_web_request.html#af3e37e1a6ed9b8c87f86f659873a83b7":[0,0,20,6],
-"class_web_request.html#af8ad320aefd0bf92e24db69f26cdbe43":[0,0,20,7],
-"class_web_request.html#af9082177972a203cdb3d869a6d8f85da":[0,0,20,9]
+"class_web_request.html#af8ad320aefd0bf92e24db69f26cdbe43":[0,0,20,7]
 };

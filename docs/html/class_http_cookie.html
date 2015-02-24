@@ -122,7 +122,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa9e9e2af358b323107636e9b52ed7146"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#aa9e9e2af358b323107636e9b52ed7146">More...</a><br /></td></tr>
 <tr class="separator:aa9e9e2af358b323107636e9b52ed7146"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7516ca30af0db3cdbf9a7739b48ce91d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_http_cookie.html#a7516ca30af0db3cdbf9a7739b48ce91d">__toString</a> ()</td></tr>
-<tr class="memdesc:a7516ca30af0db3cdbf9a7739b48ce91d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts cookie to string.  <a href="#a7516ca30af0db3cdbf9a7739b48ce91d">More...</a><br /></td></tr>
+<tr class="memdesc:a7516ca30af0db3cdbf9a7739b48ce91d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts cookie to string, which is suitable for HTTP request.  <a href="#a7516ca30af0db3cdbf9a7739b48ce91d">More...</a><br /></td></tr>
 <tr class="separator:a7516ca30af0db3cdbf9a7739b48ce91d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d0963e68bb313b163a73f2803c64600"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_http_cookie.html#a3d0963e68bb313b163a73f2803c64600">getName</a> ()</td></tr>
 <tr class="memdesc:a3d0963e68bb313b163a73f2803c64600"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns cookie name.  <a href="#a3d0963e68bb313b163a73f2803c64600">More...</a><br /></td></tr>
@@ -175,6 +175,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa22e081417ffd55094be71063e301cb7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_http_cookie.html#aa22e081417ffd55094be71063e301cb7">isAccepted</a> ($domain, $path, $secure)</td></tr>
 <tr class="memdesc:aa22e081417ffd55094be71063e301cb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if cookie can be sent to specified domain, path and protocol.  <a href="#aa22e081417ffd55094be71063e301cb7">More...</a><br /></td></tr>
 <tr class="separator:aa22e081417ffd55094be71063e301cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a0bf3c9bd24042906521f094cecb38e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_http_cookie.html#a4a0bf3c9bd24042906521f094cecb38e">toResponseString</a> ()</td></tr>
+<tr class="memdesc:a4a0bf3c9bd24042906521f094cecb38e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns cookie string that corresponds to Set-Cookie header format.  <a href="#a4a0bf3c9bd24042906521f094cecb38e">More...</a><br /></td></tr>
+<tr class="separator:a4a0bf3c9bd24042906521f094cecb38e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -238,7 +241,8 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Converts cookie to string. </p>
+<p>Converts cookie to string, which is suitable for HTTP request. </p>
+<p>See also <a class="el" href="class_http_cookie.html#a4a0bf3c9bd24042906521f094cecb38e" title="Returns cookie string that corresponds to Set-Cookie header format. ">HttpCookie::toResponseString</a>.</p>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">string</td><td>Cookie string value </td></tr>
@@ -780,6 +784,30 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a4a0bf3c9bd24042906521f094cecb38e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">toResponseString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns cookie string that corresponds to Set-Cookie header format. </p>
+<p>Note that this string can differ from source string which was passed to <a class="el" href="class_http_cookie.html#a9b94c4a350ca823f908e60b3949002c5" title="Creates HttpCookie object from cookie header value string. ">HttpCookie::fromString</a>. See also <a class="el" href="class_http_cookie.html#a7516ca30af0db3cdbf9a7739b48ce91d" title="Converts cookie to string, which is suitable for HTTP request. ">HttpCookie::__toString</a>.</p>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">string</td><td>Cookie string </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>websock2.php</li>
 </ul>
@@ -789,7 +817,7 @@ Static Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_http_cookie.html">HttpCookie</a></li>
-    <li class="footer">Generated on Sun Jan 25 2015 20:05:38 for PHP WebSocket2 Library by
+    <li class="footer">Generated on Tue Feb 24 2015 23:38:29 for PHP WebSocket2 Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
