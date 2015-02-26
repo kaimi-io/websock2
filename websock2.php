@@ -4134,7 +4134,11 @@ class HttpRequestManager
 			$next_request->setBoundary($request->getBoundary());
 			
 			if($this->use_automatic_referer)
-				$next_request->getHeaderManager()->replaceHeader('Referer', $request->getFullAddress(false));
+			{
+				//Do not send referrer on redirect from HTTPS to HTTP
+				if(!$request->isSecure() || $next_request->isSecure())
+					$next_request->getHeaderManager()->replaceHeader('Referer', $request->getFullAddress(false));
+			}
 			
 			switch($code)
 			{
