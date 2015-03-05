@@ -4179,9 +4179,9 @@ class HttpRequestManager
 							$new_params->setParam(urlencode($name),
 								$value instanceof HttpAttachment
 								? $value
-								: is_array($value)
+								: (is_array($value)
 									? array_map($urlencode_array, $value)
-									: urlencode($value), false);
+									: urlencode($value)), false);
 						}
 					}
 					
