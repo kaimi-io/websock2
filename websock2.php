@@ -1267,8 +1267,7 @@ class HttpParamManager implements ArrayAccess
 			{
 				$param_str = $name;
 				if($value !== null)
-					$param_str .= ($multiple ? '[]=' : '=')
-						. urlencode($value);
+					$param_str .= ($multiple ? '[]=' : '=') . $value;
 				
 				$ret[] = $param_str;
 			};
