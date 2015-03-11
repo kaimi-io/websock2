@@ -901,7 +901,6 @@ class HttpParamManager implements ArrayAccess
 	private $params = Array();
 	private $get_only_params = Array();
 	private $url_encode = true;
-	private $attachments = Array();
 	
 	/**
 	* @brief Enables or disables auto urlencode
