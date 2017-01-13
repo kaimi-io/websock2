@@ -26,8 +26,8 @@
 *    -# Full control of reading host response
 *  - Great scalability and control
 * <br><br>
-* <b>Copyright (c) DX, <a href="http://kaimi.ru" target="_blank">kaimi.ru</a>,
-*    <a href="http://coder.pub" target="_blank">coder.pub</a>
+* <b>Copyright (c) DX, <a href="https://kaimi.io" target="_blank">kaimi.io</a>,
+*    <a href="https://coder.pub" target="_blank">coder.pub</a>
 */
 
 ///Class that contains some helper methods for strings
@@ -103,6 +103,8 @@ class WebRequestException extends Exception
 	const UNABLE_TO_PARSE_URL = 16;
 	///Incorrect HTTP digest authentication options
 	const INCORRECT_AUTHENTICATION_OPTIONS = 17;
+	///OpenSSL extension must be installed to access HTTPS resources
+	const OPENSSL_IS_ABSENT = 18;
 	
 	/**
 	* @brief Constructor
@@ -2587,7 +2589,11 @@ abstract class NetworkSocket extends HttpSocket
 		if(!$this->isOpen())
 			$this->open($request->getAddress(), $request->getPort());
 		
-		$this->setSecure($request->isSecure());
+		$host = $request->getHeaderManager()->getHeader('Host');
+		if($host === null)
+			$host = $request->getAddress();
+		
+		$this->setSecure($request->isSecure(), $host);
 		
 		$this->write($request);
 		
@@ -2815,9 +2821,10 @@ abstract class NetworkSocket extends HttpSocket
 	* @brief Sets socket to secure mode or turns off secure mode.
 	*
 	* @param bool $secure True to set socket to secure mode, false to turn secure mode off
+	* @param bool $host Host which will be set as SSL context parameter (peer name)
 	* @throws WebRequestException in case of errors 
 	*/
-	abstract protected function setSecure($secure);
+	abstract protected function setSecure($secure, $host);
 	
 	/**
 	* @brief Returns true if socket is in secure mode.
@@ -2900,6 +2907,7 @@ class FileSocket extends NetworkSocket
 {
 	private $socket;
 	private $secure = false;
+	private $sni_host = null;
 	
 	public function __destruct()
 	{
@@ -2931,30 +2939,53 @@ class FileSocket extends NetworkSocket
 		$this->checkPoint();
 	}
 	
-	protected function setSecure($secure)
+	protected function setSecure($secure, $host)
 	{
-		if($secure === $this->secure)
+		if($secure === $this->secure && $host === $this->sni_host)
 			return;
 		
 		$this->startTimeMeasurement();
 		
 		if($secure)
 		{
-			stream_context_set_option($this->socket, Array(
+			$ctx_data = Array(
 				'ssl' => Array(
 					'verify_peer' => false,
 					'verify_peer_name' => false,
-					'allow_self_signed' => true
+					'allow_self_signed' => true,
+					'SNI_enabled' => true
 				)
-			));
+			);
+			
+			if(version_compare(PHP_VERSION, '5.6.0') >= 0)
+				$ctx_data['ssl']['peer_name'] = $host;
+			else
+				$ctx_data['ssl']['SNI_server_name'] = $host;
+			
+			if(!stream_context_set_option($this->socket, $ctx_data))
+			{
+				throw new WebRequestException('Unable to set secure socket context options',
+					WebRequestException::SOCKET_ERROR);
+			}
+			
+			if(!$this->secure)
+			{
+				if(false === stream_socket_enable_crypto($this->socket, $secure, STREAM_CRYPTO_METHOD_TLS_CLIENT))
+				{
+					if(!function_exists('openssl_open'))
+					{
+						throw new WebRequestException('OpenSSL extension must be installed to access HTTPS resources',
+							WebRequestException::OPENSSL_IS_ABSENT);
+					}
+					
+					throw new WebRequestException('Unable to upgrade socket to secure level',
+						WebRequestException::SOCKET_ERROR);
+				}
+			}
 		}
 		
-		if(false === @stream_socket_enable_crypto($this->socket, $secure, STREAM_CRYPTO_METHOD_TLS_CLIENT))
-		{
-			throw new WebRequestException('Unable to upgrade socket to secure level',
-				WebRequestException::SOCKET_ERROR);
-		}
-		
+		$this->secure = $secure;
+		$this->sni_host = $host;
 		$this->checkPoint();
 	}
 	
@@ -3071,7 +3102,7 @@ class LowLevelSocket extends NetworkSocket
 		$this->checkPoint();
 	}
 	
-	protected function setSecure($secure)
+	protected function setSecure($secure, $host)
 	{
 		if($secure) //Not supported
 		{
@@ -3526,9 +3557,14 @@ class HttpCookie
 	*    Can be null.
 	*    If WebRequest is passed, then domain and path of cookie
 	*    will be calculated if needed and checked properly.
+	* @param ICookieTimeProvider $cookie_time_provider
+	*    Cookie time provider, can be passed to provide the time, which can be used for "expires"
+	*    value calculation.
+	*    Can be null.
 	* @retval HttpCookie Cookie object or null on error
 	*/
-	public static function fromString($str, WebRequest $request = null)
+	public static function fromString($str, WebRequest $request = null,
+		ICookieTimeProvider $cookie_time_provider = null)
 	{
 		if(!preg_match('/^'
 			. '([\x21\x23-\x27\x2a\x2b-\x2e\x30-\x39\x41-\x5a\x5e-\x7a\x7c\x7e]+)'
@@ -3599,9 +3635,16 @@ class HttpCookie
 								return null;
 							
 							if((int)$match[1] == 0)
+							{
 								$cookie->setExpires(0);
+							}
 							else
-								$cookie->setExpires(time() + $match[1]);
+							{
+								if($cookie_time_provider === null)
+									$cookie_time_provider = new CookieCurrentTimeProvider;
+								
+								$cookie->setExpires($cookie_time_provider->getCurrentTime() + $match[1]);
+							}
 							
 							unset($match);
 							break;
@@ -3688,6 +3731,27 @@ class HttpCookie
 	static private function isExtensionString($str)
 	{
 		return preg_match('/^[\x20-\x3a\x3c-\x7e]+$/', $str);
+	}
+}
+
+///Time provider for automatic cookie expiration.
+interface ICookieTimeProvider
+{
+	/**
+	* @brief Returns current timestamp.
+	*
+	* @retval Current timestamp.
+	*/
+	public function getCurrentTime();
+}
+
+///Time provider for automatic cookie expiration.
+///Returns time based on time() function result.
+class CookieCurrentTimeProvider implements ICookieTimeProvider
+{
+	public function getCurrentTime()
+	{
+		return time();
 	}
 }
 
@@ -3843,6 +3907,7 @@ class HttpRequestManager
 	private $auth_data = Array();
 	private $universal_auth_data = Array();
 	private $use_automatic_referer = true;
+	private $cookie_time_provider;
 	
 	/**
 	* @brief Constructor
@@ -3851,10 +3916,23 @@ class HttpRequestManager
 	*    Socket to use for requests
 	* @param HttpCookieManager $cookie_manager
 	*    Cookie manager to use. Can be null.
+	* @param ICookieTimeProvider $cookie_time_provider
+	*    Cookie time provider, can be passed to provide the time, which can be used for "expires"
+	*    value calculation and for cookies expiration dates calculation.
+	*    Can be null.
 	*/
-	public function __construct(HttpSocket $socket, HttpCookieManager $cookie_manager = null)
+	public function __construct(HttpSocket $socket, HttpCookieManager $cookie_manager = null,
+		ICookieTimeProvider $cookie_time_provider = null)
 	{
 		$this->cookie_manager = $cookie_manager;
+		if($cookie_manager)
+		{
+			if($cookie_time_provider)
+				$this->cookie_time_provider = $cookie_time_provider;
+			else
+				$this->cookie_time_provider = new CookieCurrentTimeProvider;
+		}
+		
 		$this->socket = $socket;
 	}
 	
@@ -4065,7 +4143,7 @@ class HttpRequestManager
 	{
 		if($this->cookie_manager !== null)
 		{
-			$this->cookie_manager->cleanupCookies(time());
+			$this->cookie_manager->cleanupCookies($this->cookie_time_provider->getCurrentTime());
 			$this->cookie_manager->getCookies($request);
 		}
 		
@@ -4080,12 +4158,12 @@ class HttpRequestManager
 			$cookies = $headers->getHeaders('Set-Cookie');
 			foreach($cookies as $cookie_string)
 			{
-				$cookie = HttpCookie::fromString($cookie_string, $request);
+				$cookie = HttpCookie::fromString($cookie_string, $request, $this->cookie_time_provider);
 				if($cookie !== null)
 					$this->cookie_manager->addCookie($cookie);
 			}
 			
-			$this->cookie_manager->cleanupCookies(time());
+			$this->cookie_manager->cleanupCookies($this->cookie_time_provider->getCurrentTime());
 		}
 		
 		while($this->max_redirection_count !== 0
@@ -4207,6 +4285,8 @@ class HttpRequestManager
 				unset($call_redirect, $response, $headers);
 				return $this->runRequestInternal($next_request, $current_redirect);
 			}
+			
+			break;
 		}
 		
 		if((!empty($this->auth_data) || !empty($this->universal_auth_data)) && !$in_auth)

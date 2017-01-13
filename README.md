@@ -26,8 +26,8 @@ Features:
     2. Full control of reading host response
 * Great scalability and control 
 
-[Documentation](http://kaimi-ru.github.io/websock2/)
+[Documentation](http://kaimi-io.github.io/websock2/)
 
-[Examples](http://kaimi-ru.github.io/websock2/examples.html)
+[Examples](http://kaimi-io.github.io/websock2/examples.html)
 
-Copyright (c) DX, [kaimi.ru](http://kaimi.ru), [coder.pub](http://coder.pub)
+Copyright (c) DX, [kaimi.io](http://kaimi.io), [coder.pub](http://coder.pub)
